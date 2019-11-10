@@ -1,0 +1,52 @@
+import java.util.*;
+
+class Book{
+	int BookId;
+	String BookName;
+	String Author;
+	public int getBookId() {
+		return BookId;
+	}
+	public void setBookId(int bookId) {
+		BookId = bookId;
+	}
+	public String getBookName() {
+		return BookName;
+	}
+	public void setBookName(String bookName) {
+		BookName = bookName;
+	}
+	public String getAuthor() {
+		return Author;
+	}
+	public void setAuthor(String author) {
+		Author = author;
+	}
+}
+public class linkedList {
+
+	public static void main(String[] args) {
+		LinkedList<Book> l1 = new LinkedList<Book>();
+		Scanner cin = new Scanner(System.in);
+		
+		for(int i = 0; i<2 ;i++) {
+			Book b = new Book();
+			System.out.println("Enter book ID");
+			int ID = cin.nextInt();
+			cin.nextLine();
+			System.out.println("Enter book name");
+			String name = cin.nextLine();
+			System.out.println("Enter book author");
+			String author = cin.nextLine();
+			
+			b.setBookId(ID);
+			b.setBookName(name);
+			b.setAuthor(author);
+			l1.add(b);
+		}
+		
+		for(Book s : l1) {
+			System.out.println(s.getBookId() + " " + s.getBookName() + " " + s.getAuthor());
+		}
+	}
+}
