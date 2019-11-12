@@ -1,52 +1,109 @@
 import java.util.*;
+import java.io.*;
 
-class Book{
-	int BookId;
-	String BookName;
-	String Author;
-	public int getBookId() {
-		return BookId;
+class Employee{
+	int empid;
+	String empName;
+	String empAddress;
+	public Employee(int empid, String empName, String empAddress) {
+		super();
+		this.empid = empid;
+		this.empName = empName;
+		this.empAddress = empAddress;
 	}
-	public void setBookId(int bookId) {
-		BookId = bookId;
+	public int getEmpid() {
+		return empid;
 	}
-	public String getBookName() {
-		return BookName;
+	public void setEmpid(int empid) {
+		this.empid = empid;
 	}
-	public void setBookName(String bookName) {
-		BookName = bookName;
+	public String getEmpName() {
+		return empName;
 	}
-	public String getAuthor() {
-		return Author;
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
-	public void setAuthor(String author) {
-		Author = author;
+	public String getEmpAddress() {
+		return empAddress;
+	}
+	public void setEmpAddress(String empAddress) {
+		this.empAddress = empAddress;
+	}	
+}
+
+class EmpRecords{
+	Scanner cin = new Scanner(System.in);
+	LinkedList<Employee> records;
+	public EmpRecords() {
+		records = new LinkedList<Employee>();
+	}
+	public void addnewEmployee() {
+		Employee newEmp;
+		System.out.println("Enter Emp id");
+		int id = cin.nextInt();
+		cin.nextLine();
+		System.out.println("Enter Emp name");
+		String name = cin.nextLine();
+		System.out.println("Enter Emp Address");
+		String address = cin.nextLine();
+		newEmp = new Employee(id,name,address);
+		records.add(newEmp);
+		}
+	
+	public void showALL() throws Exception {
+		 
+	for(Employee emp : records) {
+		System.out.println(emp.getEmpid() + " " + emp.getEmpName() + " " + emp.getEmpAddress());
+			}
+		
+	}
+	
+	public void removeEmp(int eid) {
+		for(Employee emp : records) {
+			if(emp.getEmpid()==eid) {
+				records.remove(emp);
+			}
+		}
+	}
+	
+	public void updateEmployee(int eid) {
+		int count = 0;
+		for(Employee emp : records) {
+			count++;
+			if(emp.getEmpid()==eid) {
+				records.set(count, emp);
+			}
+		}
 	}
 }
-public class linkedList {
 
+public class EmployeManagement {
+	
 	public static void main(String[] args) {
-		LinkedList<Book> l1 = new LinkedList<Book>();
+		EmpRecords l1 = new EmpRecords();
 		Scanner cin = new Scanner(System.in);
-		
-		for(int i = 0; i<2 ;i++) {
-			Book b = new Book();
-			System.out.println("Enter book ID");
-			int ID = cin.nextInt();
-			cin.nextLine();
-			System.out.println("Enter book name");
-			String name = cin.nextLine();
-			System.out.println("Enter book author");
-			String author = cin.nextLine();
-			
-			b.setBookId(ID);
-			b.setBookName(name);
-			b.setAuthor(author);
-			l1.add(b);
+		for(int i = 0 ; i<2;i++) {
+			l1.addnewEmployee();
 		}
-		
-		for(Book s : l1) {
-			System.out.println(s.getBookId() + " " + s.getBookName() + " " + s.getAuthor());
+		try {
+			l1.showALL();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		System.out.println("Enter employee id to delete");
+		 int eid = cin.nextInt();
+		l1.removeEmp(eid);
+		
+		try {
+			l1.showALL();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Enter employee id to delete");
+		 int uid = cin.nextInt();
+	
+		l1.updateEmployee(uid);
 	}
+
 }
