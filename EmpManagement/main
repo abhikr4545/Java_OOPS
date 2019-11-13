@@ -53,13 +53,11 @@ public class EmployeeDatabase {
 		try {
 			Connection con = getConnection();
 			ps = con.prepareStatement(query_insert);
-			ps.setString(1, "eid");
-			 ps.setString(2, "name");
-			 ps.setString(3, "address");
+			ps.setInt(1, eid);
+			 ps.setString(2, name);
+			 ps.setString(3, address);
 			 int rowsInserted = ps.executeUpdate();
-			 if(rowsInserted>0) {
-				 System.out.println("Row inserted");
-			 }
+			 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
