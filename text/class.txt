@@ -1,0 +1,30 @@
+package CDAC;
+
+import java.io.*;
+import java.util.*;
+
+public class StudentClass {
+	public int stdID;
+	public String name;
+	public String address;
+	public double marks;
+	
+	public StudentClass(int id, String name, String city, double marks) {
+		stdID = id;
+		this.name = name;
+		address = city;
+		this.marks = marks;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%d,%s,%s,%f", stdID, name, address, marks);
+	}
+}
+
+interface IStdCollection extends Iterable<StudentClass>{
+	void addNewStudent(StudentClass std);
+	void updateStudent(StudentClass std) throws Exception;
+	void deleteStudent(int stdID) throws Exception;
+	List<StudentClass> getAllRecords();
+}

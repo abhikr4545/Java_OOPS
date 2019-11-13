@@ -1,0 +1,91 @@
+package CDAC;
+
+import java.io.*;
+import java.util.*;
+
+public class StdCSVFile implements IStdCollection{
+	private String filename = "Students.csv";
+	private List<StudentClass> _students = new ArrayList<StudentClass>();
+	
+	private void saveRecords() {
+		try {
+			FileWriter write = new FileWriter(filename);
+			for(StudentClass std : _students) {
+				write.write(std.toString() + "\n");
+			}
+			write.flush();
+			write.close();
+		} catch (Exception e) {
+			MyConsole.print(e.getMessage());
+		}
+	}
+	
+	private void loadRecords() {
+		_students = new ArrayList<StudentClass>();
+		try {
+			FileReader read = new FileReader(filename);
+			BufferedReader bf = new BufferedReader(read);
+			String line = "";
+			while((line = bf.readLine()) != null) {
+				String[] words = line.split(",");
+				int id = Integer.parseInt(words[0]);
+				String name = words[1];
+				String address = words[2];
+				double marks = Double.parseDouble(words[3]);
+				StudentClass std = new StudentClass(id, name, address, marks);
+				_students.add(std);
+			}
+			bf.close();
+			read.close();
+		} catch (Exception e) {
+			MyConsole.print(e.getMessage());
+		}
+	}
+
+	@Override
+	public Iterator<StudentClass> iterator() {
+		loadRecords();
+		return _students.iterator();
+	}
+
+	@Override
+	public void addNewStudent(StudentClass std) {
+		_students.add(std);
+		saveRecords();
+	}
+
+	@Override
+	public void updateStudent(StudentClass std) throws Exception {
+		loadRecords();
+		for(int i=0; i<_students.size(); i++) {
+			StudentClass temp = _students.get(i);
+			if(temp.stdID == std.stdID) {
+				temp.name = std.name;
+				temp.address = std.address;
+				temp.marks = std.marks;
+				saveRecords();
+				return;
+			}
+		}
+		throw new Exception("Student not Found to Update.");
+	}
+
+	@Override
+	public void deleteStudent(int stdID) throws Exception {
+		loadRecords();
+		for (int i=0; i<_students.size(); i++) {
+			if(_students.get(i).stdID == stdID) {
+				_students.remove(i);
+				saveRecords();
+				return;
+			}
+		}
+		throw new Exception("Student not Found to Delete.");
+	}
+
+	@Override
+	public List<StudentClass> getAllRecords() {
+		loadRecords();
+		return _students;
+	}
+}
