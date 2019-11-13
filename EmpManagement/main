@@ -1,0 +1,69 @@
+import java.sql.*;
+import java.util.*;
+public class EmployeeDatabase {
+	final static String url = "jdbc:mysql://localhost:3306/information?useSSL=false";
+	final static String user = "root";
+	final static String password = "root";
+	static PreparedStatement ps = null;
+	static Connection getConnection() throws Exception{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection(url,user,password);
+		return con;
+	}
+	public static void main(String[] args) {
+		boolean processing = true;
+		Scanner cin = new Scanner(System.in);
+		
+		try {
+			do {
+				System.out.println("Press 1 to add record");
+				System.out.println("Press 2 to delete record");
+				System.out.println("Press 3 to update record");
+				System.out.println("Press 4 to show record");
+				System.out.println("Any other key will exit");
+				
+				int choice = cin.nextInt();
+				
+				switch(choice) {
+				case 1:
+					System.out.println("Enter employee id");
+					int eid = cin.nextInt();
+					cin.nextLine();
+					System.out.println("Enter employee address");
+					String address = cin.nextLine();
+					System.out.println("Enter employee name");
+					String Name = cin.nextLine();
+					addRecords(eid,Name,address);
+					break;
+					default:
+						processing = false;
+						break;
+				}
+				
+			}while(processing);
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+	}
+	private static void addRecords(int eid, String name, String address) {
+		String query_insert = "INSERT INTO empdb(id,name,address) VALUES(?,?,?)";
+		try {
+			Connection con = getConnection();
+			ps = con.prepareStatement(query_insert);
+			ps.setString(1, "eid");
+			 ps.setString(2, "name");
+			 ps.setString(3, "address");
+			 int rowsInserted = ps.executeUpdate();
+			 if(rowsInserted>0) {
+				 System.out.println("Row inserted");
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+		
+}
