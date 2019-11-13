@@ -1,0 +1,119 @@
+package CDAC;
+
+import java.util.*;
+class StudentFactory{
+	public static IStdCollection createCollection(String arg) throws Exception{
+		switch(arg) {
+			case "csv":
+				return new StdCSVFile();
+			case "ser":
+				return new StdSerialization();
+			case "sql":
+				return new StdJDBCFile();
+			default:
+				throw new Exception("Invalid Collection Type.");
+		}
+	}
+}
+
+public class StudentMain {
+	static IStdCollection collection = null;
+	
+	public static void main(String[] args) {
+		try {
+			String ch = MyConsole.getString("Type: \n 'csv'\tFor CSV File\n 'ser'\tFor Serialization\n 'sql'\tFor JDBC-MYSQL\n\nEnter Your Choice:");
+			collection = StudentFactory.createCollection(ch);
+		}catch(Exception e) {
+			MyConsole.print(e.getMessage());
+		}
+		String menu = Common.readFile(args[0]);
+		
+		boolean process = true;
+		do {
+			int choice = MyConsole.getNumber(menu);
+			process = processMenu(choice);
+		}while(process);
+	}
+
+	private static boolean processMenu(int choice) {
+		switch(choice) {
+			case 1:
+				addingRecord();
+				break;
+			case 2:
+				updatingRecord();
+				break;
+			case 3:
+				deletingRecord();
+				break;
+			case 4:
+				findingRecord();
+				break;
+			case 5:
+				showAllRecords();
+				break;
+			default:
+				return false;
+		}
+		return true;
+	}
+
+	private static void addingRecord() {
+		//take inputs from the user
+		int id = MyConsole.getNumber("Enter Student ID: ");
+		String name = MyConsole.getString("Enter the Name: ");
+		String city = MyConsole.getString("Enter the Address: ");
+		double marks = MyConsole.getDouble("Enter Total Marks: ");
+		//Create the Student Object
+		StudentClass std = new StudentClass(id, name, city, marks);
+		collection.addNewStudent(std);
+	}
+
+	private static void updatingRecord() {
+		//take inputs from the user
+		int uid = MyConsole.getNumber("Enter Student ID to Update: ");
+		String uname = MyConsole.getString("Enter the Name to Update: ");
+		String uaddress = MyConsole.getString("Enter the Address to Update: ");
+		double umarks = MyConsole.getDouble("Enter the Total Marks to Update: ");
+		//Create the Student Object
+		StudentClass std = new StudentClass(uid, uname, uaddress, umarks);
+		//Pass this object to the Update Function and handle exception if any.
+		try {
+			collection.updateStudent(std);
+		} catch (Exception e) {
+			MyConsole.print(e.getMessage());
+		}
+	}
+
+	private static void deletingRecord() {
+		//take the id to delete...
+		int id = MyConsole.getNumber("Enter Student ID to Delete: ");
+		try {
+			//Call the Collection to Delete
+			collection.deleteStudent(id);
+		} catch (Exception e) {
+			// Handle Exceptions if Any
+			MyConsole.print(e.getMessage());
+		}
+	}
+
+	private static void findingRecord() {
+		//Ask the User name or part of name to search
+		String name = MyConsole.getString("Enter Name or Part of Name to Search: ");
+		//Call the getAll Employees
+		List<StudentClass> all = collection.getAllRecords();
+		//Iterate throw the Employees and display those names matching the Condition	
+		for(StudentClass std : all) {
+			if(std.name.contains(name)) {
+				MyConsole.print(std);
+			}
+		}
+	}
+
+	private static void showAllRecords() {
+		List<StudentClass> all = collection.getAllRecords();
+		for(StudentClass std : all) {
+			MyConsole.print(std);
+		}
+	}
+}
