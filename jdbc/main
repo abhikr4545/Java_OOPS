@@ -1,0 +1,42 @@
+import java.sql.*;
+public class JDBC {
+
+	public static void main(String[] args) throws Exception{
+		PreparedStatement ps = null;
+		
+		String url = "jdbc:mysql://localhost:3306/information?useSSL=false";
+		String user = "root";
+		String pass = "root";
+		String query = "select f_id,f_name from fruits";
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection(url,user,pass);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(query);
+		while(rs.next()) {
+			String fid =  rs.getString("f_id");
+			String fname =  rs.getString("f_name");
+			
+			System.out.println("ID : " + fid + " Name : " + fname);
+		}
+		/*String query_insert = "INSERT INTO fruits (f_id,f_name) values (?,?)";
+		 ps = con.prepareStatement(query_insert); 
+		 ps.setString(1, "1");
+		 ps.setString(2, "Apple");
+		  int rowsInserted = ps.executeUpdate();*/
+		
+	
+		/*String query_update = "UPDATE fruits SET f_id=?,f_name = ? where f_id =?";
+		ps = con.prepareStatement(query_update);
+		ps.setString(1, "56");
+		ps.setString(2, "Carrot");
+		ps.setString(3, "4");
+		
+		int rowUpdated = ps.executeUpdate();*/
+		
+		String query_delete = "DELETE FROM fruits where f_id = ?";
+		ps = con.prepareStatement(query_delete);
+		ps.setString(1,"23");
+		int rowDelted = ps.executeUpdate();
+	}
+
+}
