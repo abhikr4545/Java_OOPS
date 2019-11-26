@@ -1,0 +1,85 @@
+package program;
+import java.util.*;
+
+class Student{
+	private int id;
+	private String name;
+	
+	Student(int id,String name){
+		this.id = id;
+		this.name = name;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String toString() {
+		return "Name : " + name +" ID : " + id;
+	}
+}
+
+class StudentRepository{
+	List<Student> list = new ArrayList<>();
+	
+	public  void addStudent(Student S) {
+		list.add(S);
+	}
+	
+	public void deleteStudent(int id){
+		for(Student x : list) {
+			int num = x.getId();
+			if(num==id) {
+				list.remove(x);
+			}
+		}
+	}
+	
+	public void update(int id) {
+		for(Student x : list) {
+			int num = x.getId();
+			if(num==id) {
+				String nname = "Sathi";
+				int nid = 4;
+				x.setId(nid);
+				x.setName(nname);
+			}
+		}
+	}
+	
+	public void show() {
+		for(Student x : list) {
+			System.out.println(x.toString());
+		}
+	}
+}
+
+public class Index {
+
+	public static void main(String[] args) { 
+		Student s = new Student(1,"Abhishek");
+		Student s1 = new Student(2,"Abhishek");
+		StudentRepository x = new StudentRepository();
+		x.addStudent(s);
+		x.addStudent(s1);
+		x.show();
+		x.deleteStudent(1);
+		x.show();
+		x.update(2);
+		x.show();
+		}
+	}
+
+
