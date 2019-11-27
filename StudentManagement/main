@@ -32,6 +32,7 @@ class Student{
 }
 
 class StudentRepository{
+	Scanner cin = new Scanner(System.in);
 	List<Student> list = new ArrayList<>();
 	
 	public  void addStudent(Student S) {
@@ -43,6 +44,7 @@ class StudentRepository{
 			int num = x.getId();
 			if(num==id) {
 				list.remove(x);
+				break;
 			}
 		}
 	}
@@ -51,10 +53,9 @@ class StudentRepository{
 		for(Student x : list) {
 			int num = x.getId();
 			if(num==id) {
-				String nname = "Sathi";
-				int nid = 4;
-				x.setId(nid);
-				x.setName(nname);
+				System.out.println("Enter new name");
+				String name = cin.nextLine();
+				x.setName(name);
 			}
 		}
 	}
@@ -69,16 +70,8 @@ class StudentRepository{
 public class Index {
 
 	public static void main(String[] args) { 
-		Student s = new Student(1,"Abhishek");
-		Student s1 = new Student(2,"Abhishek");
-		StudentRepository x = new StudentRepository();
-		x.addStudent(s);
-		x.addStudent(s1);
-		x.show();
-		x.deleteStudent(1);
-		x.show();
-		x.update(2);
-		x.show();
+		Menu m = new Menu();
+		m.getMenu();
 		}
 	}
 
